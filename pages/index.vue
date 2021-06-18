@@ -1,128 +1,89 @@
 <template>
-  <v-card
-    rounded="lg"
-    color="background"
-    flat
-  >
-    <v-card-title>
-      Shop
-    </v-card-title>
-    <v-card-text>
-      <v-data-iterator
-        :items="shopItem"
-        :search="search"
-        :items-per-page="5"
+  <v-container fluid>
+    <v-row>
+      <v-col
+        lg="8"
+        md="12"
       >
-        <template #header>
-          <v-text-field
-            v-model="search"
-            color="primary"
-            clearable
-            flat
-            filled
-            rounded
-            hide-details
-            prepend-inner-icon="mdi-magnify"
-            label="Recherche"
-          />
-          <v-spacer />
-        </template>
-
-        <template #default="props">
-          <v-row class="mt-8">
-            <v-col
-              v-for="item in props.items"
-              :key="item.title"
-              cols="12"
-              sm="6"
-              md="4"
-              lg="3"
-            >
-              <v-card
-                color="secondary"
-                flat
-                rounded="lg"
-                class="px-4"
-              >
-                <v-card-subtitle>
-                  <v-row justify="center">
-                    <v-col cols="6">
-                      <v-img height="256" width="324" :src="item.picture" />
-                    </v-col>
-                  </v-row>
-                </v-card-subtitle>
-                <v-card-title class="subheading font-weight-bold">
-                  <v-list-item>
-                    <v-list-item-content>
-                      <v-list-item-title>
-                        {{ item.title }}
-                      </v-list-item-title>
-                      <v-list-item-subtitle class="font-weight-light">
-                        {{ item.category }}
-                      </v-list-item-subtitle>
-                    </v-list-item-content>
-                    <v-list-item-action>
-                      <v-chip color="background">
-                        {{ item.price }} €
-                      </v-chip>
-                    </v-list-item-action>
-                  </v-list-item>
-                </v-card-title>
-                <v-card-text>
-                  <v-row class="mb-2">
-                    <v-col v-for="(color, i) in item.colors" :key="i" cols="1" class="mr-1">
-                      <v-badge
-                        :color="color"
-                      />
-                    </v-col>
-                  </v-row>
-                  <span> {{ item.description }}</span>
-                </v-card-text>
-                <v-card-actions>
-                  <v-spacer />
-                  <v-btn
-                    rounded
-                    color="primary"
-                    @click="addToCart(item)"
+        <!--<v-card
+          class="my-4"
+          color="secondary"
+          rounded="xl"
+        >
+          <v-card-title>
+            Faite vous livrer Adresse Albert de Mun
+          </v-card-title>
+        </v-card>-->
+        <v-card
+          flat
+          color="background"
+        >
+          <v-card-title>
+            Tout les restaurants
+          </v-card-title>
+          <v-card-text>
+            <v-row>
+              <v-col cols="3">
+                <v-hover
+                  v-slot="{ hover }"
+                >
+                  <v-card
+                    rounded="xl"
+                    class="px-8"
+                    :color="hover ? 'primary' : 'secondary'"
+                    :elevation="hover ? 4 : 0"
                   >
-                    Ajouter au panier
-                  </v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-col>
-          </v-row>
-        </template>
-      </v-data-iterator>
-    </v-card-text>
-  </v-card>
+                    <v-card-title style="justify-content: center" class="pt-8">
+                      <v-avatar
+                        :color="hover ? 'secondary' : 'primary'"
+                        elevation="0"
+                        size="64"
+                      >
+                        <v-icon :color="hover ? 'primary' : 'secondary'" large>
+                          mdi-chevron-right
+                        </v-icon>
+                      </v-avatar>
+                    </v-card-title>
+                    <v-card-title style="justify-content: center" class="px-4">
+                      <v-list-item>
+                        <v-list-item-content>
+                          <v-list-item-title :style="hover ? 'color: var(--v-textLight-base)' : ''">
+                            Nom du restaurant
+                          </v-list-item-title>
+                          <v-list-item-subtitle :style="hover ? 'color: var(--v-textLight-base)' : ''">
+                            Fast-food
+                          </v-list-item-subtitle>
+                        </v-list-item-content>
+                      </v-list-item>
+                    </v-card-title>
+                    <v-card-actions style="justify-content: center">
+                      <v-btn
+                        :color="hover ? 'secondary' : 'primary'"
+                        elevation="0"
+                        fab
+                        x-small
+                      >
+                        <v-icon :color="hover ? 'primary' : 'secondary'">
+                          mdi-chevron-right
+                        </v-icon>
+                      </v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-hover>
+              </v-col>
+            </v-row>
+          </v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
 export default {
   data () {
     return {
-      search: ''
-    }
-  },
-  computed: {
-    cart: {
-      get () {
-        return this.$store.getters['cart/cart']
-      }
-    },
-
-    shopItem: {
-      get () {
-        return this.$store.getters['shop/item']
-      }
-    }
-  },
-  mounted () {
-    this.$store.dispatch('shop/fetch')
-  },
-  methods: {
-    addToCart (item) {
-      this.$store.commit('cart/addCart', item)
+      orderDrawer: true
     }
   }
 }

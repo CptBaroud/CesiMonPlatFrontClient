@@ -1,13 +1,13 @@
 export default {
-  setItem (state, data) {
-    state.item = data
+  setOrder (state, data) {
+    state.order = data
   },
 
-  addItem (state, data) {
-    state.item.push(data.data)
+  addOrder (state, data) {
+    state.order.push(data)
   },
 
-  editItem (state, data) {
+  editOrder (state, data) {
     const index = state.item.findIndex((item) => {
       return item._id === data._id
     })
@@ -15,7 +15,7 @@ export default {
     state.item.push(data)
   },
 
-  removeItem (state, data) {
+  removeOrder (state, data) {
     const index = state.item.findIndex((item) => {
       return item._id === data._id
     })
