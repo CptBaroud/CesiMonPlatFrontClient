@@ -1,21 +1,17 @@
 import axios from 'axios'
 
 export default {
-  fetch (context, data) {
-    const token = data.token
-    delete data.token
-
+  fetch (context, token) {
     return new Promise((resolve, reject) => {
-      axios.get(process.env.api_url + '/order?user=' + data.user, {
+      axios.get(process.env.api_url + '/category', {
         headers: {
           authorization: token
         }
       })
         .then((response) => {
-          context.commit('setAllOrder', response.data)
+          context.commit('setCategory', response.data)
           resolve(response)
-        })
-        .catch((e) => {
+        }).catch((e) => {
         // eslint-disable-next-line no-console
           console.error(e)
           reject(onerror)
@@ -23,21 +19,20 @@ export default {
     })
   },
 
-  add (context, data) {
+  fetchCategory (context, data) {
     const token = data.token
     delete data.token
 
     return new Promise((resolve, reject) => {
-      axios.post(process.env.api_url + '/order', data, {
+      axios.get(process.env.api_url + '/category/' + data.type, {
         headers: {
           authorization: token
         }
       })
         .then((response) => {
-          context.commit('setOrder', response.data)
+          context.commit('setNotification', response.data)
           resolve(response)
-        })
-        .catch((e) => {
+        }).catch((e) => {
         // eslint-disable-next-line no-console
           console.error(e)
           reject(onerror)

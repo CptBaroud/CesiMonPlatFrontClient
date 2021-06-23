@@ -4,7 +4,7 @@ export default {
     titleTemplate: '%s - Client',
     title: 'Client',
     htmlAttrs: {
-      lang: 'en'
+      lang: 'fr'
     },
     meta: [
       { charset: 'utf-8' },
@@ -16,8 +16,19 @@ export default {
     ]
   },
 
+  router: {
+    middleware: ['auth']
+  },
+
+  env: {
+    api_url: 'http://localhost:3000',
+    client_url: 'http://localhost:8000',
+    restaurant_url: 'http://localhost:8001'
+  },
+
   server: {
-    port: 8000 // par défaut: 3000
+    port: 8000, // par défaut: 3000,
+    host: '127.0.0.1'
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
@@ -42,11 +53,55 @@ export default {
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/axios
-    '@nuxtjs/axios'
+    '@nuxtjs/axios',
+    // https://go.nuxtjs.dev/auth
+    '@nuxtjs/auth',
+    // https://nuxt-socket-io.netlify.app/
+    'nuxt-socket-io',
+    'vue-toastification/nuxt'
   ],
 
+  // Socket configuration
+  io: {
+    // module options
+    sockets: [
+      {
+        name: 'main',
+        url: 'http://localhost:3000/',
+        default: true
+      }
+    ]
+  },
+
+  /*
+  ** Auth module configuration
+  ** See https://axios.nuxtjs.org/options
+  */
+  auth: {
+    strategies: {
+      local: {
+        endpoints: {
+          login: { url: '/auth/?origin=client', method: 'post', propertyName: 'token' },
+          logout: { url: '/auth/', method: 'delete' },
+          user: { url: '/users/getUser', method: 'get', propertyName: 'user' }
+        },
+        tokenRequired: true,
+        tokenType: 'Bearer'
+      }
+    },
+    redirect: {
+      login: '/login',
+      logout: '/login',
+      user: '/profile',
+      callback: '/login',
+      home: '/'
+    }
+  },
+
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
-  axios: {},
+  axios: {
+    baseURL: 'http://localhost:3000'
+  },
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
   vuetify: {

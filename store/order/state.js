@@ -1,13 +1,11 @@
 export default () => ({
   order: {
-    user: {},
-    accepted: {
-      type: Boolean,
-      default: false
-    },
-    price: Number,
-    items: [{}],
-    menu: [{}]
+    user: 0,
+    accepted: false,
+    price: 0,
+    menu: [],
+    article: []
   },
+  allOrder: [],
   totalPrice: 0
 })
