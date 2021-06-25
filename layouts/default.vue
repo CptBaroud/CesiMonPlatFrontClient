@@ -5,7 +5,7 @@
         v-show="$auth.loggedIn"
         v-model="drawer"
         :mini-variant="miniVariant"
-        mini-variant-width="5em"
+        mini-variant-width="6em"
         fixed
         color="secondary"
         elevation="0"
@@ -16,12 +16,11 @@
           class="my-4"
         >
           <img
-            v-if="!miniVariant"
-            width="128"
+            width="48"
             height="64"
             class="ml-4 mt-8 mb-8"
             alt="Login"
-            src="https://www.positivethinking.tech/wp-content/uploads/2021/01/Logo-Vuejs.png"
+            :src="logo"
           >
           <v-list-item
             v-for="(item, i) in items"
@@ -325,6 +324,10 @@ export default {
 
     totalPrice () {
       return this.$store.getters['order/totalPrice']
+    },
+
+    logo () {
+      return this.$vuetify.theme.dark ? 'http://localhost:3000/images/logoDark.svg' : 'http://localhost:3000/images/logoLight.svg'
     }
   },
   mounted () {
