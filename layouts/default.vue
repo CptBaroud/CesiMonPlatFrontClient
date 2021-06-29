@@ -123,7 +123,8 @@
                 </template>
                 <v-list rounded color="background">
                   <v-list-item
-                    disabled
+                    to="/profil"
+                    nuxt
                   >
                     <v-list-item-title>Mon compte</v-list-item-title>
                   </v-list-item>
@@ -211,6 +212,7 @@
                 text
                 large
                 rounded
+                @click="cancelOrder"
               >
                 Annuler
               </v-btn>
@@ -261,8 +263,8 @@
           <v-icon>
             mdi-map-marker
           </v-icon>
-          <span>
-            Albert de Mun
+          <span v-if="$auth.loggedIn">
+            {{ $auth.user.address }}
           </span>
         </v-btn>
         <v-autocomplete
@@ -286,7 +288,7 @@ export default {
   },
   data () {
     return {
-      drawer: false,
+      drawer: true,
       orderDrawer: true,
       fixed: false,
       items: [
@@ -304,6 +306,11 @@ export default {
           icon: 'mdi-clipboard-text-multiple-outline',
           title: 'Commandes',
           to: '/order'
+        },
+        {
+          icon: 'mdi-scooter',
+          title: 'Livraisons',
+          to: '/delivery'
         }
       ],
       miniVariant: true
@@ -335,6 +342,29 @@ export default {
       this.$store.dispatch('restaurant/fetch', this.$auth.getToken('local'))
       this.$store.dispatch('order/fetch', { token: this.$auth.getToken('local'), user: this.$auth.user.id })
     }
+
+    // On ecoute le socket
+    this.socket = this.$nuxtSocket({
+      name: 'main'
+    })
+
+    this.socket.on('delivery', (data) => {
+      if (data.update) {
+        this.$store.dispatch('delivery/fetch', {
+          token: this.$auth.getToken('local'),
+          user: this.$auth.user.id
+        })
+      }
+    })
+
+    this.socket.on('order', (data) => {
+      if (data.update) {
+        this.$store.dispatch('order/fetch', {
+          token: this.$auth.getToken('local'),
+          user: this.$auth.user.id
+        })
+      }
+    })
   },
   methods: {
     switchTheme () {
@@ -376,6 +406,10 @@ export default {
           this.$store.commit('order/clearOrder')
         }
       })
+    },
+
+    cancelOrder () {
+      this.$store.commit('order/clearOrder')
     }
   }
 }

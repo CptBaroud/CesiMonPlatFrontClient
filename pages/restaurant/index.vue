@@ -54,6 +54,7 @@ export default {
   components: {
     restaurantCard
   },
+  middleware: 'auth',
   data () {
     return {
       options: null

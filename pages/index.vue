@@ -2,7 +2,7 @@
   <v-container fluid>
     <v-row>
       <v-col
-        lg="12"
+        lg="9"
         md="12"
       >
         <v-card
@@ -105,6 +105,31 @@
           </v-card-text>
         </v-card>
       </v-col>
+      <v-col
+        lg="3"
+        md="12"
+      >
+        <v-card
+          rounded="xl"
+          flat
+          color="background"
+        >
+          <v-card-title>
+            Vos livraisons
+          </v-card-title>
+          <v-card-text>
+            <v-card
+              rounded="xl"
+              flat
+              color="secondary"
+            >
+              <v-card-text>
+                Hello
+              </v-card-text>
+            </v-card>
+          </v-card-text>
+        </v-card>
+      </v-col>
     </v-row>
   </v-container>
 </template>
@@ -116,6 +141,7 @@ export default {
   components: {
     restaurantCard
   },
+  middleware: 'auth',
   data () {
     return {
       orderDrawer: true
@@ -126,6 +152,10 @@ export default {
       get () {
         return this.$store.getters['category/restaurantCategories']
       }
+    },
+
+    delivery () {
+      return this.$store.getters['delivery/getLast']
     },
 
     restaurant: {

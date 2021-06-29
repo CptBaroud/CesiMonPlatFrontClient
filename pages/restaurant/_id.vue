@@ -106,19 +106,31 @@ export default {
     menuCard
   },
   beforeRouteLeave (to, from, next) {
-    const answer = window.confirm('Etes vous sur de vouloir quitter ? Votre panier sera vider si vous changer de restaurant')
-    if (answer) {
-      next()
+    if (this.order.article.concat(this.order.menu).length >= 1) {
+      const answer = window.confirm('Etes vous sur de vouloir quitter ? Votre panier sera vidé si vous changer de restaurant')
+      if (answer) {
+        this.$store.commit('order/clearOrder')
+        next()
+      } else {
+        next(false)
+      }
     } else {
-      next(false)
+      next()
     }
   },
+  middleware: 'auth',
   data () {
     return {
       selectedCategory: ''
     }
   },
   computed: {
+    order: {
+      get () {
+        return this.$store.getters['order/order']
+      }
+    },
+
     restaurant: {
       get () {
         return this.$store.getters['restaurant/restaurant'].filter(object => object._id === this.$route.params.id)[0]

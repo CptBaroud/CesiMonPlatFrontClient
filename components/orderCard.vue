@@ -104,7 +104,7 @@ export default {
         const id = this.orderedItem.findIndex((idItem) => {
           return idItem._id === item._id
         })
-        console.log(id)
+
         if (id !== -1) {
           this.orderedItem[id].quantity++
         } else {
