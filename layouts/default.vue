@@ -334,13 +334,15 @@ export default {
     },
 
     logo () {
-      return this.$vuetify.theme.dark ? 'http://localhost:3000/images/logoDark.svg' : 'http://localhost:3000/images/logoLight.svg'
+      return this.$vuetify.theme.dark ? process.env.api_url + '/images/logoDark.svg' : process.env.api_url + '/images/logoLight.svg'
     }
   },
   mounted () {
     if (this.$auth.loggedIn) {
       this.$store.dispatch('restaurant/fetch', this.$auth.getToken('local'))
       this.$store.dispatch('order/fetch', { token: this.$auth.getToken('local'), user: this.$auth.user.id })
+      this.$store.dispatch('category/fetchCategory', { token: this.$auth.getToken('local'), user: this.$auth.user.id })
+      this.$store.dispatch('delivery/fetch', { token: this.$auth.getToken('local'), user: this.$auth.user.id })
     }
 
     // On ecoute le socket

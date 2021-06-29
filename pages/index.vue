@@ -124,7 +124,24 @@
               color="secondary"
             >
               <v-card-text>
-                Hello
+                <v-data-iterator
+                  :items="delivery"
+                  no-data-text="Vous n'avez pas encore fait de commandes"
+                  no-results-text="Aucune catégorie ne correspond a votre recherche"
+                >
+                  <template #default="{items}">
+                    <v-row>
+                      <v-col
+                        v-for="item in items"
+                        :key="item._id"
+                      >
+                        <delivery-card
+                          :item="item"
+                        />
+                      </v-col>
+                    </v-row>
+                  </template>
+                </v-data-iterator>
               </v-card-text>
             </v-card>
           </v-card-text>
@@ -136,10 +153,11 @@
 
 <script>
 import restaurantCard from '../components/restaurantCard'
-
+import deliveryCard from '../components/deliveryCard'
 export default {
   components: {
-    restaurantCard
+    restaurantCard,
+    deliveryCard
   },
   middleware: 'auth',
   data () {

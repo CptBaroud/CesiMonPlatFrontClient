@@ -24,13 +24,13 @@ export default {
     delete data.token
 
     return new Promise((resolve, reject) => {
-      axios.get(process.env.api_url + '/category/' + data.type, {
+      axios.get(process.env.api_url + '/category/type/0', {
         headers: {
           authorization: token
         }
       })
         .then((response) => {
-          context.commit('setNotification', response.data)
+          context.commit('setRestaurantCategories', response.data)
           resolve(response)
         }).catch((e) => {
         // eslint-disable-next-line no-console

@@ -5,7 +5,7 @@
     flat
     :to="'/restaurant/' + item._id"
   >
-    <v-img :src="item.logo ? item.logo : 'http://localhost:3000/svg/Hinterrhein.svg'" height="130" />
+    <v-img :src="item.logo ? item.logo : src" height="130" />
     <v-card-title>
       {{ item.name }}
     </v-card-title>
@@ -50,10 +50,15 @@ export default {
             }
           ],
           description: '',
-          logo: 'http://localhost:3000/images/pizza1.png'
+          logo: ''
         }
       },
       required: true
+    }
+  },
+  computed: {
+    src () {
+      return process.env.api_url + '/svg/Hinterrhein.svg'
     }
   }
 }
