@@ -21,8 +21,7 @@ export default {
 
   env: {
     api_url: 'http://localhost:3000',
-    client_url: 'http://localhost:8000',
-    restaurant_url: 'http://localhost:8001'
+    client_url: 'http://127.0.0.1:8000'
   },
 
   server: {
