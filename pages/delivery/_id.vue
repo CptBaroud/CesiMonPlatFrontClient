@@ -14,6 +14,7 @@
             <v-btn
               rounded
               color="primary"
+              @click="close"
             >
               Livrer
             </v-btn>
