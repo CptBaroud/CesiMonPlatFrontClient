@@ -7,11 +7,12 @@ export default {
     state.allOrder = data
   },
 
-  addArticleToOrder (state, data) {
-    if (!state.order.restaurant) {
-      state.order.restaurant = data.item.restaurant
-    }
+  initOrder (state, data) {
+    state.order.restaurant = data._id
+    state.order.restaurantUser = data.user
+  },
 
+  addArticleToOrder (state, data) {
     const id = state.order.article.findIndex((item) => {
       return item._id === data.item._id
     })
@@ -28,22 +29,18 @@ export default {
   },
 
   removeArticleFromOrder (state, data) {
-    const id = state.order.menu.findIndex((item) => {
+    const id = state.order.article.findIndex((item) => {
       return item._id === data.item._id
     })
 
-    if (state.order.menu[id].quantity > 1) {
-      state.order.menu[id].quantity--
+    if (state.order.article[id].quantity > 1) {
+      state.order.article[id].quantity--
     } else {
-      state.order.menu.splice(id, 1)
+      state.order.article.splice(id, 1)
     }
   },
 
   addMenuToOrder (state, data) {
-    if (!state.order.restaurant) {
-      state.order.restaurant = data.item.restaurant
-    }
-
     const id = state.order.menu.findIndex((item) => {
       return item._id === data.item._id
     })
@@ -60,14 +57,14 @@ export default {
   },
 
   removeMenuFromOrder (state, data) {
-    const id = state.order.article.findIndex((item) => {
+    const id = state.order.menu.findIndex((item) => {
       return item._id === data.item._id
     })
 
-    if (state.order.article[id].quantity > 1) {
-      state.order.article[id].quantity--
+    if (state.order.menu[id].quantity > 1) {
+      state.order.menu[id].quantity--
     } else {
-      state.order.article.splice(id, 1)
+      state.order.menu.splice(id, 1)
     }
   },
 

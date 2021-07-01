@@ -3,6 +3,7 @@
     color="background"
     flat
     rounded="xl"
+    @click="$router.push('/delivery/' + item._id)"
   >
     <v-card-title>
       <v-list-item style="padding: 0">
@@ -17,16 +18,16 @@
           <v-list-item-title
             class="font-weight-bold d-inline-block text-truncate list-title-ticket mb-1"
           >
-            Commande #{{ item._id.substr(0, 6) }}
+            Livraison #{{ item._id.substr(0, 6) }}
           </v-list-item-title>
-          <v-list-item-action-text class="font-weight-bold">
-            {{ order.price }}<span style="color: var(--v-primary-base)">€</span>
-          </v-list-item-action-text>
+          <v-list-item-subtitle>
+            Arrive a {{ new Date(item.deliveryTime).toLocaleTimeString('FR-fr') }}
+          </v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
     </v-card-title>
     <v-card-text v-if="order">
-      <v-chip-group>
+      <v-chip-group column>
         <v-chip
           v-for="article in orderedItem"
           :key="article._id"
@@ -109,10 +110,6 @@ export default {
           }
         })
       }
-    },
-
-    toPrep () {
-      this.$store.dispatch('delivery/prepare', { token: this.$auth.getToken('local'), _id: this.item._id })
     },
 
     icon (item) {

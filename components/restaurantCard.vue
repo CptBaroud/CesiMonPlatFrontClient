@@ -15,7 +15,7 @@
     <v-card-text>
       {{ item.description }}
       <v-chip-group
-        v-if="item.categories.length > 1"
+        v-if="item.categories && item.categories.length > 1"
       >
         <v-chip
           v-for="(tag, i) in item.categories"

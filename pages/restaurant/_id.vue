@@ -144,7 +144,9 @@ export default {
     }
   },
   mounted () {
-    this.$store.dispatch('restaurant/fetch', this.$auth.getToken('local'))
+    this.$store.dispatch('restaurant/fetch', this.$auth.getToken('local')).then(() => {
+      this.$store.commit('order/initOrder', this.restaurant)
+    })
     this.$store.dispatch('menu/fetch', { token: this.$auth.getToken('local'), restaurant: this.$route.params.id })
   }
 }

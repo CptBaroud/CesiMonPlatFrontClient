@@ -28,6 +28,7 @@
     <v-card-text>
       <v-divider />
       <v-list
+        v-if="item.article || item.menu"
         dense
         rounded
         color="secondary"
@@ -84,34 +85,38 @@ export default {
   methods: {
     prettierArray () {
       // On copie chaque objets d'article
-      this.item.article.forEach((item) => {
-        const copy = Object.assign({}, item)
-        const id = this.orderedItem.findIndex((idItem) => {
-          return idItem._id === item._id
-        })
+      if (this.item.article) {
+        this.item.article.forEach((item) => {
+          const copy = Object.assign({}, item)
+          const id = this.orderedItem.findIndex((idItem) => {
+            return idItem._id === item._id
+          })
 
-        if (id !== -1) {
-          this.orderedItem[id].quantity++
-        } else {
-          copy.quantity = 1
-          this.orderedItem.push(copy)
-        }
-      })
+          if (id !== -1) {
+            this.orderedItem[id].quantity++
+          } else {
+            copy.quantity = 1
+            this.orderedItem.push(copy)
+          }
+        })
+      }
 
       // On copue chaque objets de menu
-      this.item.menu.forEach((item) => {
-        const copy = Object.assign({}, item)
-        const id = this.orderedItem.findIndex((idItem) => {
-          return idItem._id === item._id
-        })
+      if (this.item.menu) {
+        this.item.menu.forEach((item) => {
+          const copy = Object.assign({}, item)
+          const id = this.orderedItem.findIndex((idItem) => {
+            return idItem._id === item._id
+          })
 
-        if (id !== -1) {
-          this.orderedItem[id].quantity++
-        } else {
-          copy.quantity = 1
-          this.orderedItem.push(copy)
-        }
-      })
+          if (id !== -1) {
+            this.orderedItem[id].quantity++
+          } else {
+            copy.quantity = 1
+            this.orderedItem.push(copy)
+          }
+        })
+      }
     },
 
     icon (item) {

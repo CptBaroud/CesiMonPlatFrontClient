@@ -30,7 +30,7 @@
               <template #default="{items}">
                 <v-row>
                   <v-col v-for="(item,i) in items" :key="i">
-                    <order-card
+                    <delivery-card
                       :item="item"
                     />
                   </v-col>
@@ -45,11 +45,12 @@
 </template>
 
 <script>
-import orderCard from '../../components/orderCard'
+import deliveryCard from '../../components/deliveryCard'
+
 export default {
   name: 'Index',
   components: {
-    orderCard
+    deliveryCard
   },
   middleware: 'auth',
   data () {

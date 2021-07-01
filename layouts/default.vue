@@ -73,9 +73,9 @@
             <v-menu open-on-hover bottom offset-y max-height="300">
               <template #activator="{ on, attrs }">
                 <v-badge
-                  :content="2"
+                  :content="notification.length"
                   style="border-color: var(v--background-color)"
-                  :value="2"
+                  :value="notification.length"
                   class="mr-4"
                   color="green"
                   bordered
@@ -89,7 +89,7 @@
                   </v-icon>
                 </v-badge>
               </template>
-            <!--<v-list rounded color="secondary" max-width="375">
+              <v-list rounded color="secondary" max-width="375">
                 <template v-for="(item, a) in notification">
                   <notification
                     :key="a"
@@ -103,7 +103,7 @@
                     </v-list-item-title>
                   </v-list-item-content>
                 </v-list-item>
-              </v-list>!-->
+              </v-list>
             </v-menu>
             <v-list color="secondary" dense rounded class="mr-8">
               <v-menu open-on-hover bottom offset-y>
@@ -281,10 +281,12 @@
 
 <script>
 import orderCard from '../components/orderItemCard'
+import notification from '../components/notification'
 
 export default {
   components: {
-    orderCard
+    orderCard,
+    notification
   },
   data () {
     return {
@@ -323,6 +325,12 @@ export default {
       }
     },
 
+    notification: {
+      get () {
+        return this.$store.getters['notification/notifications']
+      }
+    },
+
     orderItem: {
       get () {
         return this.$store.getters['order/order'].menu.concat(this.$store.getters['order/order'].article)
@@ -343,6 +351,7 @@ export default {
       this.$store.dispatch('order/fetch', { token: this.$auth.getToken('local'), user: this.$auth.user.id })
       this.$store.dispatch('category/fetchCategory', { token: this.$auth.getToken('local'), user: this.$auth.user.id })
       this.$store.dispatch('delivery/fetch', { token: this.$auth.getToken('local'), user: this.$auth.user.id })
+      this.$store.dispatch('notification/fetch', { token: this.$auth.getToken('local'), user: this.$auth.user.id })
     }
 
     // On ecoute le socket
@@ -365,6 +374,28 @@ export default {
           token: this.$auth.getToken('local'),
           user: this.$auth.user.id
         })
+      }
+    })
+
+    this.socket.on('notification', (data) => {
+      if (data.update && data.user === this.$auth.user.id) {
+        this.$store.dispatch('notification/fetch', {
+          token: this.$auth.getToken('local'),
+          user: this.$auth.user.id
+        })
+        if (data.data.info) {
+          switch (data.data.info.type) {
+            case 0:
+              this.$toast.info(data.data.title)
+              break
+            case 1:
+              this.$toast.success(data.data.title)
+              break
+            case 2:
+              this.$toast.success(data.data.title)
+              break
+          }
+        }
       }
     })
   },
@@ -406,6 +437,14 @@ export default {
       this.$store.dispatch('order/add', finalOrder).then((response) => {
         if (response.status === 200) {
           this.$store.commit('order/clearOrder')
+          this.$store.dispatch('notification/create', {
+            token: this.$auth.getToken('local'),
+            user: finalOrder.restaurantUser,
+            title: 'Une commande à été passée',
+            to: '',
+            type: 0,
+            icon: 'mdi-clipboard-text'
+          })
         }
       })
     },

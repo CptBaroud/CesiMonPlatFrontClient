@@ -11,7 +11,12 @@
             Votre livraison
           </v-card-title>
           <v-card-text>
-            {{ delivery }}
+            <v-btn
+              rounded
+              color="primary"
+            >
+              Livrer
+            </v-btn>
           </v-card-text>
         </v-card>
       </v-col>
@@ -28,6 +33,14 @@ export default {
       get () {
         return this.$store.getters['delivery/deliveries'].filter(i => i._id === this.$route.params.id)
       }
+    }
+  },
+  methods: {
+    close () {
+      this.$store.dispatch('delivery/close', {
+        token: this.$auth.getToken('local'),
+        delivery: this.delivery._id
+      })
     }
   }
 }

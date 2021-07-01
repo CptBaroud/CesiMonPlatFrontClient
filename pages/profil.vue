@@ -194,6 +194,38 @@
                   </v-col>
                 </v-row>
               </div>
+
+              <div class="mb-8">
+                <v-list-item>
+                  <v-list-item-icon>
+                    <v-icon>
+                      mdi-delete-outline
+                    </v-icon>
+                  </v-list-item-icon>
+                  <v-list-item-content>
+                    <v-list-item-title>
+                      Supprimer
+                    </v-list-item-title>
+                    <v-list-item-subtitle>
+                      Supprimer votre compte et les données vous concernant
+                    </v-list-item-subtitle>
+                  </v-list-item-content>
+                </v-list-item>
+
+                <v-row>
+                  <v-col cols="12">
+                    <v-spacer />
+                    <v-btn
+                      color="error"
+                      rounded
+                      x-large
+                      @click="deleteAccount()"
+                    >
+                      Supprimer
+                    </v-btn>
+                  </v-col>
+                </v-row>
+              </div>
             </v-list>
           </v-card-text>
         </v-card>
@@ -229,7 +261,7 @@ export default {
         return this.$auth.user.firstName
       },
       set (value) {
-        this.$store.dispatch('user/updateData', { token: this.$auth.getToken('local'), _id: this.$auth.user._id, name: value })
+        this.$store.dispatch('user/updateData', { token: this.$auth.getToken('local'), _id: this.$auth.user.id, firstName: value })
       }
     },
 
@@ -238,7 +270,7 @@ export default {
         return this.$auth.user.lastName
       },
       set (value) {
-        this.$store.dispatch('user/updateData', { token: this.$auth.getToken('local'), _id: this.$auth.user._id, surname: value })
+        this.$store.dispatch('user/updateData', { token: this.$auth.getToken('local'), _id: this.$auth.user.id, lastName: value })
       }
     },
 
@@ -247,7 +279,7 @@ export default {
         return this.$auth.user.phone
       },
       set (value) {
-        this.$store.dispatch('user/updateData', { token: this.$auth.getToken('local'), _id: this.$auth.user._id, phone: value })
+        this.$store.dispatch('user/updateData', { token: this.$auth.getToken('local'), _id: this.$auth.user.id, phone: value })
       }
     },
 
@@ -256,7 +288,7 @@ export default {
         return this.$auth.user.email
       },
       set (value) {
-        this.$store.dispatch('user/updateData', { token: this.$auth.getToken('local'), _id: this.$auth.user._id, mail: value })
+        this.$store.dispatch('user/updateData', { token: this.$auth.getToken('local'), _id: this.$auth.user.id, email: value })
       }
     },
 
@@ -265,7 +297,7 @@ export default {
         return this.$auth.user.avatar
       },
       set (value) {
-        this.$store.dispatch('user/updateData', { token: this.$auth.getToken('local'), _id: this.$auth.user._id, avatar: value })
+        this.$store.dispatch('user/updateData', { token: this.$auth.getToken('local'), _id: this.$auth.user.id, avatar: value })
       }
     }
   },
@@ -284,8 +316,7 @@ export default {
     },
 
     uploadPicture () {
-      const agent = this.$auth.user
-      delete agent.password
+      const user = this.$auth.user
 
       const toBase64 = file => new Promise((resolve, reject) => {
         const reader = new FileReader()
@@ -295,14 +326,26 @@ export default {
       })
 
       toBase64(this.uploadProfilPictureItem).then((response) => {
-        this.$store.dispatch('agent/updateProfilePicture', {
+        this.$store.dispatch('user/updateProfilePicture', {
           token: this.$auth.getToken('local'),
           type: this.uploadProfilPictureItem.type,
           name: this.uploadProfilPictureItem.name,
-          agent,
+          user,
           file: response
         })
       })
+    },
+
+    deleteAccount () {
+      this.$store.dispatch('user/delete', {
+        token: this.$auth.getToken('local'),
+        user: this.$auth.user.id
+      })
+        .then((response) => {
+          if (response.status === 200) {
+            this.$auth.logout()
+          }
+        })
     },
 
     copyUrl () {

@@ -20,5 +20,26 @@ export default {
           reject(onerror)
         })
     })
+  },
+
+  close (context, data) {
+    const token = data.token
+    delete data.token
+
+    return new Promise((resolve, reject) => {
+      axios.put(process.env.api_url + '/delivery/close/' + data.delivery, {
+        headers: {
+          authorization: token
+        }
+      })
+        .then((response) => {
+          context.commit('setDeliveries', response.data)
+          resolve(response)
+        }).catch((e) => {
+        // eslint-disable-next-line no-console
+          console.error(e)
+          reject(onerror)
+        })
+    })
   }
 }
