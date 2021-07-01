@@ -32,7 +32,7 @@ export default {
   computed: {
     delivery: {
       get () {
-        return this.$store.getters['delivery/deliveries'].filter(i => i._id === this.$route.params.id)
+        return this.$store.getters['delivery/deliveries'].filter(i => i._id === this.$route.params.id)[0]
       }
     }
   },
