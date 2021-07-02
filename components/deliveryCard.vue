@@ -1,6 +1,6 @@
 <template>
   <v-card
-    color="background"
+    :color="color"
     flat
     rounded="xl"
     @click="$router.push('/delivery/' + item._id)"
@@ -8,7 +8,7 @@
     <v-card-title>
       <v-list-item style="padding: 0">
         <v-list-item-action-text class="mr-2">
-          <v-sheet :color="color(item.status)" rounded="lg" width="32" height="32">
+          <v-sheet :color="colorIcon(item.status)" rounded="lg" width="32" height="32">
             <v-icon size="32">
               mdi-clipboard-text-outline
             </v-icon>
@@ -59,6 +59,11 @@ export default {
         }
       },
       required: true
+    },
+    color: {
+      type: String,
+      default: 'background',
+      required: false
     }
   },
   data () {
@@ -115,24 +120,34 @@ export default {
     icon (item) {
       switch (item) {
         case 1:
-          return 'mdi-food-variant'
+          return 'En attente'
         case 2:
-          return 'mdi-bottle-soda'
+          return 'En préparation'
+        case 3:
+          return 'En livraison'
+        case 5:
+          return 'Livrée'
+        case 6:
+          return 'livrée'
         default:
-          return 'mdi-food'
+          return 'Indéfinis'
       }
     },
 
-    color (item) {
+    colorIcon (item) {
       switch (item) {
-        case 'accepted':
-          return 'success'
-        case 'declined':
-          return 'error'
-        case 'pending':
-          return 'warning'
-        default:
+        case 0:
           return 'accent'
+        case 1:
+          return 'warning'
+        case 3:
+          return 'info'
+        case 5:
+          return 'info'
+        case 6:
+          return 'success'
+        default:
+          return 'primary'
       }
     }
   }

@@ -32,6 +32,7 @@
                   <v-col v-for="(item,i) in items" :key="i">
                     <delivery-card
                       :item="item"
+                      color="secondary"
                     />
                   </v-col>
                 </v-row>

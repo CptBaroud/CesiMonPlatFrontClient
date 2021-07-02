@@ -172,8 +172,16 @@ export default {
       }
     },
 
-    delivery () {
-      return this.$store.getters['delivery/getLast']
+    delivery: {
+      get () {
+        return this.$store.getters['delivery/getLast']
+      }
+    },
+
+    deliveries: {
+      get () {
+        return this.$store.getters['delivery/deliveries']
+      }
     },
 
     restaurant: {

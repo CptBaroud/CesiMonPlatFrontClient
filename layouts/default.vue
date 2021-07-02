@@ -268,11 +268,18 @@
           </span>
         </v-btn>
         <v-autocomplete
+          ref="restaurantSearch"
+          v-model="goToRestaurant"
           rounded
           filled
-          label="Rechercher un plat ou un restaurant"
-          prepend-inner-icon="mdi-magnify"
+          placeholder="Rechercher un restaurant"
+          :items="restaurant"
+          item-text="name"
+          item-value="_id"
+          append-icon=""
           hide-details
+          prepend-inner-icon="mdi-magnify"
+          @change="goTo"
         />
       </v-app-bar>
     </v-app>
@@ -293,6 +300,7 @@ export default {
       drawer: true,
       orderDrawer: true,
       fixed: false,
+      goToRestaurant: '',
       items: [
         {
           icon: 'mdi-home-outline',
@@ -328,6 +336,12 @@ export default {
     notification: {
       get () {
         return this.$store.getters['notification/notifications']
+      }
+    },
+
+    restaurant: {
+      get () {
+        return this.$store.getters['restaurant/restaurant']
       }
     },
 
@@ -400,6 +414,15 @@ export default {
     })
   },
   methods: {
+    /**
+     * Redirige vers le restaurant via la barre de recherche
+     */
+    goTo () {
+      this.$router.push('/restaurant/' + this.goToRestaurant)
+      this.$refs.restaurantSearch.reset()
+      this.goToRestaurant = null
+    },
+
     switchTheme () {
       this.$vuetify.theme.dark = !this.$vuetify.theme.dark
     },
