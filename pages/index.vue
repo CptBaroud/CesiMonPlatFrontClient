@@ -115,35 +115,13 @@
           color="background"
         >
           <v-card-title>
-            Vos livraisons
+            Votre livraison en cours
           </v-card-title>
           <v-card-text>
-            <v-card
-              rounded="xl"
-              flat
+            <delivery-card
+              :item="delivery"
               color="secondary"
-            >
-              <v-card-text>
-                <v-data-iterator
-                  :items="delivery"
-                  no-data-text="Vous n'avez pas encore fait de commandes"
-                  no-results-text="Aucune catégorie ne correspond a votre recherche"
-                >
-                  <template #default="{items}">
-                    <v-row>
-                      <v-col
-                        v-for="item in items"
-                        :key="item._id"
-                      >
-                        <delivery-card
-                          :item="item"
-                        />
-                      </v-col>
-                    </v-row>
-                  </template>
-                </v-data-iterator>
-              </v-card-text>
-            </v-card>
+            />
           </v-card-text>
         </v-card>
       </v-col>

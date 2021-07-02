@@ -10,8 +10,8 @@ export default {
         const dateA = new Date(a.created)
         const dateB = new Date(b.created)
         return dateB - dateA
-      })
+      })[0]
     }
-    return out[0]
+    return out
   }
 }

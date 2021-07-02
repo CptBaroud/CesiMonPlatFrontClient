@@ -11,33 +11,40 @@
             Vos livraisons
           </v-card-title>
           <v-card-text>
-            <v-data-iterator
-              :items="delivery"
-              :search="search"
-              no-data-text="Vous n'avez pas encore passé de commandes"
-              no-results-text="Aucun résultat trouvé"
+            <v-card
+              rounded="xl"
+              color="secondary"
+              flat
             >
-              <template #header>
-                <v-spacer />
-                <v-text-field
-                  v-model="search"
-                  rounded
-                  filled
-                  prepend-inner-icon="mdi-magnify"
-                  label="Recherche"
-                />
-              </template>
-              <template #default="{items}">
-                <v-row>
-                  <v-col v-for="(item,i) in items" :key="i">
-                    <delivery-card
-                      :item="item"
-                      color="secondary"
+              <v-card-text>
+                <v-data-iterator
+                  :items="delivery"
+                  :search="search"
+                  no-data-text="Vous n'avez pas encore passé de commandes"
+                  no-results-text="Aucun résultat trouvé"
+                >
+                  <template #header>
+                    <v-spacer />
+                    <v-text-field
+                      v-model="search"
+                      rounded
+                      filled
+                      prepend-inner-icon="mdi-magnify"
+                      label="Recherche"
                     />
-                  </v-col>
-                </v-row>
-              </template>
-            </v-data-iterator>
+                  </template>
+                  <template #default="{items}">
+                    <v-row>
+                      <v-col v-for="(item,i) in items" :key="i">
+                        <delivery-card
+                          :item="item"
+                        />
+                      </v-col>
+                    </v-row>
+                  </template>
+                </v-data-iterator>
+              </v-card-text>
+            </v-card>
           </v-card-text>
         </v-card>
       </v-col>
